@@ -7,7 +7,7 @@ namespace Controller;
 
 [ApiController]
 [Route("api/customers")]
-public class ConsumersController(ICustomerRepository customerRepository) : ControllerBase
+public class CustomerController(ICustomerRepository customerRepository) : ControllerBase
 {
     [HttpGet]
     public IQueryable<Customer> GetAll()

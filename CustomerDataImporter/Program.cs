@@ -35,7 +35,7 @@ HttpResponseMessage response = await httpClient.PostAsync(url, content);
 if (response.IsSuccessStatusCode)
 {
     string responseData = await response.Content.ReadAsStringAsync();
-    Console.WriteLine($"Received response: {responseData}");
+    Console.WriteLine("Customers created");
 }
 else
 {

@@ -11,7 +11,7 @@ static IEdmModel GetEdmModel()
 {
     ODataConventionModelBuilder odataBuilder = new();
     odataBuilder.EntitySet<Esco>("Escos");
-    odataBuilder.EntitySet<Customer>("Consumers");
+    odataBuilder.EntitySet<Customer>("Customers");
     return odataBuilder.GetEdmModel();
 }
 
