@@ -1,61 +1,43 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using CustomerAPI;
-using Entities;
-using Microsoft.EntityFrameworkCore;
-
-var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-var dbPath = @"/Users/mushtaq/projects/dotnet/CustomerSpike/CustomerAPI/Data/customerData.db";
-
-var isExists = File.Exists(dbPath);
-
-optionsBuilder.UseSqlite($"Data Source={dbPath}");
-using var context = new ApplicationDbContext(optionsBuilder.Options);
+using System.Text;
+using DTO;
 
 var filePath = "CustomerData.txt";
-var lines = File.ReadAllLines(filePath);
+var customersLines = File.ReadAllLines(filePath);
+List<Customer> customers = new List<Customer>();
 
-foreach (var line in lines)
+foreach (string customerLine in customersLines)
 {
-    var parts = line.Split('\t').Select(p => p.Trim('~')).ToArray();
-
-    // Create an Esco entity
-    var escoID = int.Parse(parts[2]);
-    var escoName = $"esco-{escoID.ToString()}";
-    var esco = new Esco { Id = escoID, Name = escoName };
+    var customerArray = customerLine.Split('\t').Select(p => p.Trim('~')).ToArray();
+    var names = customerArray[1].Split(" ");
     
-    var existingEsco = context.Escos.FirstOrDefault(e => e.Id == esco.Id);
-    if (existingEsco == null)
+    var customer = new Customer()
     {
-        context.Escos.Add(esco);
-        context.SaveChanges();
-        existingEsco = esco;
-    }
+        Id = int.Parse(customerArray[0]) ,
+        FirstName = names[0],
+        LastName = names[1],
+        EscoId = int.Parse(customerArray[2])
+    };
+    customers.Add(customer);
+}
 
-    // Create a Customer entity
-    var names = parts[1].Split(" ");
-    var customer = new Customer { Id = int.Parse(parts[0]), FirstName = names[0], LastName = names[1] };
-    
-    var existingConsumer = context.Customers.FirstOrDefault(c => c.Id == customer.Id);
-    if (existingConsumer == null)
-    {
-        context.Customers.Add(customer);
-        
-        if (existingEsco.Customers == null)
-            existingEsco.Customers = new List<Customer>();
-        
-        existingEsco.Customers.Add(customer);
-        
-        context.SaveChanges();
-    }
+var httpClient = new HttpClient();
+var url = "http://localhost:5190/api/customers/bulk";
 
-    /*// Create a ConsumerPool entity, linking the Customer and Esco
-    var consumerPool = new ConsumerPool { Esco = existingEsco, Customer = existingConsumer };
-    var existingConsumerPool = context.ConsumerPools
-        .FirstOrDefault(cp => cp.Esco.Id == consumerPool.Esco.Id && cp.Customer.Id == consumerPool.Customer.Id);
-    if (existingConsumerPool == null)
-    {
-        context.ConsumerPools.Add(consumerPool);
-        context.SaveChanges();
-    }*/
+var content = new StringContent(
+    Newtonsoft.Json.JsonConvert.SerializeObject(customers),
+    Encoding.UTF8,
+    "application/json");
+
+HttpResponseMessage response = await httpClient.PostAsync(url, content);
+
+if (response.IsSuccessStatusCode)
+{
+    string responseData = await response.Content.ReadAsStringAsync();
+    Console.WriteLine($"Received response: {responseData}");
+}
+else
+{
+    Console.WriteLine($"Failed to POST data: {response.ReasonPhrase}");
 }

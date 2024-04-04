@@ -30,7 +30,7 @@ public class CustomerRepository : ICustomerRepository
 
     public async Task BulkCreateAsync(List<Customer> consumers)
     {
-        await _context.Customers.AddRangeAsync(consumers);
+        _context.Customers.AddRange(consumers);
         await _context.SaveChangesAsync();
     }
 }
