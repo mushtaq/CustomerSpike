@@ -30,7 +30,11 @@ builder.Services.AddControllers()
     );
 
 builder.Services
-    .AddDbContext<ApplicationDbContext>(optionsBuilder => optionsBuilder.UseSqlite($"Data Source={"Data/customerData.db"}"));
+    .AddDbContext<ApplicationDbContext>(optionsBuilder => 
+        optionsBuilder
+            .UseSqlite($"Data Source={"Data/customerData.db"}")
+            // .LogTo(Console.WriteLine)
+        );
 
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IEscoRepository, EscoRepository>();

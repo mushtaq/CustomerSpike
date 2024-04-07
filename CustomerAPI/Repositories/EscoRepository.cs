@@ -7,7 +7,7 @@ public class EscoRepository(ApplicationDbContext context) : IEscoRepository
 {
     public  IQueryable<Esco> GetAll()
     {
-        return context.Escos.Include(e => e.Customers).AsQueryable();
+        return context.Escos.AsQueryable();
     }
 
     public IQueryable<Esco> GetById(int id)

@@ -14,6 +14,7 @@ elk-translation-status.json
 bin
 obj
 *sln.DotSettings.user
+*.db*
 
 public/emojis
 

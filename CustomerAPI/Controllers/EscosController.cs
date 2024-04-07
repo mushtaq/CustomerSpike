@@ -6,25 +6,18 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace  Controller;
 
-public class EscosController : ODataController
+public class EscosController(IEscoRepository escoRepository) : ODataController
 {
-    private readonly IEscoRepository _escoRepository;
-
-    public EscosController(IEscoRepository escoRepository)
-    {
-        _escoRepository = escoRepository;
-    }
-
     [EnableQuery]
     public IQueryable<Esco> Get()
     {
-        return _escoRepository.GetAll();
+        return escoRepository.GetAll();
     }
 
     [EnableQuery]
     public IQueryable<Esco> Get(int key)
     {
-        return _escoRepository.GetById(key);
+        return escoRepository.GetById(key);
     }
 
     public async Task<IActionResult> Post([FromBody] Esco esco)
@@ -33,7 +26,7 @@ public class EscosController : ODataController
         {
             return BadRequest(ModelState);
         }
-        await _escoRepository.Create(esco);
+        await escoRepository.Create(esco);
         return Created(esco);
     }
     
@@ -44,7 +37,7 @@ public class EscosController : ODataController
         {
             return BadRequest(ModelState);
         }
-        await _escoRepository.BulkCreate(escos);
+        await escoRepository.BulkCreate(escos);
         return Ok();
     }
 
