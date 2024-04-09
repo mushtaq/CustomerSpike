@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerDataImporter", "CustomerDataImporter\CustomerDataImporter.csproj", "{10947D64-C938-4700-A219-9C85D5D07D14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerClient", "CustomerClient\CustomerClient.csproj", "{10947D64-C938-4700-A219-9C85D5D07D14}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerAPI", "CustomerAPI\CustomerAPI.csproj", "{D6F49C97-E7E0-42CC-95BF-EADF6E5CEA3C}"
 EndProject

@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace  Entities;
 
-[Table("Customers")]
 public class Customer
 {
     public int Id { get; set; }
