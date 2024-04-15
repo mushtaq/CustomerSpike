@@ -1,32 +1,21 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Text;
-using DTO;
+using CustomerClient.FixedWidthParser;
+using Newtonsoft.Json;
 
 var filePath = "CustomerData.txt";
-var customersLines = File.ReadAllLines(filePath);
-List<Customer> customers = new List<Customer>();
 
-foreach (string customerLine in customersLines)
-{
-    var customerArray = customerLine.Split('\t').Select(p => p.Trim('~')).ToArray();
-    var names = customerArray[1].Split(" ");
-    
-    var customer = new Customer()
-    {
-        Id = int.Parse(customerArray[0]) ,
-        FirstName = names[0],
-        LastName = names[1],
-        EscoId = int.Parse(customerArray[2])
-    };
-    customers.Add(customer);
-}
+// Following are the three ways to parse fixed width files
+var customers = CustomerParserInBuilt.Parse(filePath);
+// var customers = CustomerParserFileHelpers.Parse(filePath);
+// var customers = CustomerParserFlatFiles.Parse(filePath);
 
 var httpClient = new HttpClient();
 var url = "http://localhost:5190/api/customers/bulk";
 
 var content = new StringContent(
-    Newtonsoft.Json.JsonConvert.SerializeObject(customers),
+    JsonConvert.SerializeObject(customers),
     Encoding.UTF8,
     "application/json");
 
