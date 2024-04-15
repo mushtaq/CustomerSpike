@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomerAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240404053128_Init")]
-    partial class Init
+    [Migration("20240415070650_inital")]
+    partial class inital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,8 +38,6 @@ namespace CustomerAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EscoId");
-
                     b.ToTable("Customers");
                 });
 
@@ -56,20 +54,6 @@ namespace CustomerAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Escos");
-                });
-
-            modelBuilder.Entity("Entities.Customer", b =>
-                {
-                    b.HasOne("Entities.Esco", null)
-                        .WithMany("Customers")
-                        .HasForeignKey("EscoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Esco", b =>
-                {
-                    b.Navigation("Customers");
                 });
 #pragma warning restore 612, 618
         }

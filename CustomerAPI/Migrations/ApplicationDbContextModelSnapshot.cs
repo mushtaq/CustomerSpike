@@ -35,8 +35,6 @@ namespace CustomerAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EscoId");
-
                     b.ToTable("Customers");
                 });
 
@@ -53,20 +51,6 @@ namespace CustomerAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Escos");
-                });
-
-            modelBuilder.Entity("Entities.Customer", b =>
-                {
-                    b.HasOne("Entities.Esco", null)
-                        .WithMany("Customers")
-                        .HasForeignKey("EscoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Esco", b =>
-                {
-                    b.Navigation("Customers");
                 });
 #pragma warning restore 612, 618
         }
